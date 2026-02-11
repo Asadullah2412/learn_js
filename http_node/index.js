@@ -1,6 +1,4 @@
-const http = require('http');
-// const fs = require("fs");
-// const url = require("url")
+
 const express = require('express')
 
 const { defaultMaxListeners } = require('events');
@@ -16,17 +14,13 @@ app.get("/about", (req, res) => {
 });
 
 app.listen(8000, () => console.log("server Started 👿"))
+
+//// const http = require('http');
+// const fs = require("fs");
+// const url = require("url") // npm install url
+
 // const myServer = http.createServer(app)
-
-
 // myServer.listen(8000, () => console.log("Server started!"))
-
-
-
-
-
-
-
 
 // const myServer = http.createServer((req, res) => {
 //     if (req.url === "/favicon.ico") return res.end();
