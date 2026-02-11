@@ -1,12 +1,13 @@
 const http = require('http');
 const fs = require("fs");
+const url = require("url")
 const { defaultMaxListeners } = require('events');
 
 const myServer = http.createServer((req, res) => {
-
+    if (req.url === "/favicon.ico") return res.end();
     // console.log(req);
     // const log = `${Date.now()} : ${req.url} new Req Received\n`;
-    const log = `${new Date().toISOString()} : new Req Received\n`;
+    const log = `${new Date().toISOString()} :${req.url} new Req Received\n`;
     fs.appendFile('log.txt', log, (err, data) => {
         // res.end("Hello from Server Again")
         switch (req.url) {
