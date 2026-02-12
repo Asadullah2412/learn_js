@@ -1,0 +1,17 @@
+create REST API - JSON
+
+
+GET /users -HTML render ✅ 
+GET /api/users -List all users ✅
+
+Get/users/1 - Get the user with ID 1 ✅
+Get/users/2 - Get the user with ID 2 ✅
+Dynamic Path parameters
+GET /api/users/:id
+✅✅
+
+
+POST/api/users -create new user 
+Patch/api/users/1 - Edit the user with ID 1
+
+Delete/api/users/1 - Edit the user with ID 1
