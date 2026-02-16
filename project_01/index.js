@@ -82,7 +82,7 @@ app.post('/api/users', (req, res) => {
     fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
         return res.json({ status: "pending" });
     })
-    return res.json({ status: "Success", id: users.length });
+    return res.status(201).json({ status: "Success", id: users.length });
 
 });
 
