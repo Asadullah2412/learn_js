@@ -12,6 +12,6 @@ GET /api/users/:id
 
 
 POST/api/users -create new user 
-Patch/api/users/1 - Edit the user with ID 1
+Patch/api/users/1 - Edit the user with ID 1 ✅
 
-Delete/api/users/1 - Edit the user with ID 1
+Delete/api/users/1 - Edit the user with ID 1 ✅

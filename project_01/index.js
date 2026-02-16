@@ -1,7 +1,10 @@
 const express = require('express');
 const users = require("./MOCK_DATA.json");
 const fs = require('fs')
+
+
 const app = express();
+
 const PORT = 8000;
 
 app.use(express.urlencoded({ extended: false }))
@@ -25,12 +28,36 @@ app.route("/api/users/:id").get((req, res) => {
     const id = Number(req.params.id);
     const user = users.find((user) => user.id === id);
     return res.json(user);
-}).put((req, res) => {
+}).patch((req, res) => {
+    const id = Number(req.params.id);
+    const user = users.find(user => user.id === id);
+
+    if (!user) {
+        return res.status(404).json({ message: "User Not Found" });
+    }
+    // update only provided fields
+    Object.assign(user, req.body);
+
+    return res.json({
+        message: "User Updated Successfully",
+        user,
+    });
+
     // Edit user with id
-    res.send('pending');
+    // res.send('pending');
 }).delete((req, res) => {
     // delete user with id
-    res.send('pending');
+    const id = Number(req.params.id);
+    const index = users.findIndex(user => user.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ message: "User Not Found" });
+    }
+    users.splice(index, 1);
+
+    return res.json({
+        message: "User deleted successfully",
+    });
 })
 
 
