@@ -7,7 +7,21 @@ const app = express();
 
 const PORT = 8000;
 
+// middleware -Plugin
 app.use(express.urlencoded({ extended: false }))
+
+app.use((req, res, next) => {
+    fs.appendFile(
+        '\nlog.txt', `${Date.now()}:${req.ip}:${req.method}: ${req.path}`,
+        (err, data) => {
+            next();
+        }
+    );
+    console.log("Hello from middleware 1");
+    // return res.json({ msg: "HEllo from middleware 1" });
+    next();
+});
+
 
 // Routes
 app.get('/api/users', (req, res) => {
