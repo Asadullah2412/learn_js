@@ -1,11 +1,41 @@
 const express = require('express');
-const users = require("./MOCK_DATA.json");
+// const users = require("./MOCK_DATA.json");
+
 const fs = require('fs')
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 const app = express();
 
 const PORT = 8000;
+
+
+mongoose.connect('mongodb://127.0.0.1:27017/project_01').then(() => console.log("Mongo Db connected")).catch((err) => console.log("Mongo Error", err));
+
+
+const userSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    jobTitle: {
+        type: String,
+    },
+    gender: {
+        type: String,
+    },
+});
+
+const User = mongoose.model("user", userSchema);
+
 
 // middleware -Plugin
 app.use(express.urlencoded({ extended: false }))
@@ -28,10 +58,11 @@ app.get('/api/users', (req, res) => {
     return res.json(users);
 });
 
-app.get('/users', (req, res) => {
+app.get('/users', async (req, res) => {
+    const allDBUsers = await User.find({});
     const html = `
 <ul>
-${users.map((user) => `<li>${user.first_name}</li>`)}
+${allDBUsers.map((user) => `<li>${user.firstName}-${user.email}</li>`)}
 </ul>
 `;
     res.send(html)
@@ -75,14 +106,37 @@ app.route("/api/users/:id").get((req, res) => {
 })
 
 
-app.post('/api/users', (req, res) => {
+app.post('/api/users', async (req, res) => {
     const body = req.body;
     // console.log('Body', body)
-    users.push({ ...body, id: users.length + 1 });
-    fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
-        return res.json({ status: "pending" });
-    })
-    return res.status(201).json({ status: "Success", id: users.length });
+    if (
+        !body ||
+        !body.first_name ||
+        !body.last_name ||
+        !body.email ||
+        !body.gender ||
+        !body.jobTitle
+
+    ) {
+        return res.status(400).json({ msg: "All fields are req..." })
+    }
+    const result = await User.create({
+        firstName: body.first_name,
+        lastName: body.last_name,
+        email: body.email,
+        gender: body.gender,
+        jobTitle: body.job_title
+    });
+
+    return res.status(201).json({ msg: "success" });
+    // console.log('result', result);
+
+
+    // users.push({ ...body, id: users.length + 1 });
+    // fs.writeFile('./MOCK_DATA.json', JSON.stringify(users), (err, data) => {
+    //     return res.json({ status: "pending" });
+    // })
+    // return res.status(201).json({ status: "Success", id: users.length });
 
 });
 
