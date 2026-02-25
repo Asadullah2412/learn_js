@@ -1,11 +1,15 @@
 const express = require("express");
 const app = express();
+const path = require("path");
 const urlRoute = require('./routes/url');
 const connectToMongoDB = require('./connect');
 const URL = require('./models/urls');
 
 console.log(require('./connect'));
 const PORT = 8001;
+
+app.set("view engine", "ejs");
+app.set('views', path.resolve("./views"));
 
 // connectToMongoDB('mongodb://localhost:27017/short-url').then(() => console.log('Mongodb connected'));
 connectToMongoDB('mongodb://localhost:27017/short-url')
